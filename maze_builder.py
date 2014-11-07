@@ -3,65 +3,76 @@ Builds a Maze
 
 """
 
-from botchallenge import *
+import minecraft.minecraft as minecraft
+import minecraft.block as block
+import time
+
+mc = minecraft.Minecraft.create()
+mc.postToChat("Begin Building Maze")
 
 
-USERNAME = "i_py" # Put your minecraft username here
-SERVER = "au.botchallenge.net" # Put the address of the minecraft server here
-
-robot = Robot(USERNAME, SERVER)
-
-with open('templates/maze.txt', 'r') as f:
+#grab maze file 
+with open('maze2.txt', 'r') as f:
   data = f.read()
 f.close()
-with open('templates/ground.txt', 'r') as f:
-  ground = f.read()
-f.close()
-ground_layout = ground
 
-maze_layout = data
-def mine_if_solid(direction):
-  is_solid = robot.is_block_solid(direction)
-  if is_solid: 
-    robot.mine(direction)
-def bot_block():
-  block = robot.get_block_type(Dir.DOWN)
-  if block != BlockType.COBBLESTONE:
-    robot.mine(Dir.DOWN)
-    robot.place(Dir.DOWN, BlockType.COBBLESTONE)
-"""
-Assume that you have a square matrix
-Otherwise you will not return at the same spot.
-"""
+def cur_pos():
+  #return list of player's tile position
+  x,y,z = mc.player.getTilePos()
+  location = [x, y, z]
+  return location
 
-def build_layer(layer):
-    # Move up one so we're placing the blocks downward
-    robot.move(Dir.UP)
-    old_lines = layer.split("\n")
-    #reverses cellular automation
-    lines = old_lines[::-1]
-    num_lines = len(lines)
-    print("There are", num_lines, "lines")
-    for line in lines:
-        line_len = len(line)
-        for char in line:
-            if char == "1":
-              robot.place(Dir.DOWN, BlockType.COBBLESTONE)
-            mine_if_solid(Dir.LEFT)
-            robot.move(Dir.LEFT)
-        # End of the line, go back to the beginning for the next line
-        for i in range(line_len):
-            robot.move(Dir.RIGHT)
-        mine_if_solid(Dir.FORWARD)
-        robot.move(Dir.FORWARD)
-    # End of the layer, go back to the start position
-    for l in range(num_lines):
-      mine_if_solid(Dir.BACKWARD)
-      robot.move(Dir.BACKWARD)
+def check_block(location, BLOCK):
+  #return Boolean if location has block.block
+  #location = (x, y, z)
+  #block = mcpi block type in CAPS
+  if mc.getBlock(location[0], location[1], location[2]) == block.BLOCK:
+    return True
+  else:
+    return False
+  
 
-build_layer(ground_layout)
-for layer in range(2):
-  build_layer(maze_layout)
+def build_maze(layer):
+  """
+  Takes in a text generated maze.
+  Clears a space in front of player position
+  moves player to middle of maze on x-axis
+  builds maze
+  clears entrance to maze
+
+  """
+  #get player position
+  #may also use origin = mc.player.getTilePos()
+  #then use origin.x, origin.y, origin.z to set
+  x,y,z = mc.player.getTilePos()
+  lines = layer.split("\n")
+
+  z_lines = len(lines)
+  x_lines = len(lines[0])
+  midline = x_lines//2
+  #clear space for maze
+  mc.setBlocks(x, y, z, x+x_lines, y+30, z+z_lines, block.AIR)
+  #put player outside of maze in middle
+  mc.player.setTilePos(midline, y, z-1)
+  
+  for line in lines:
+    for char in line:
+      if char == "1":
+        #set block where 1 goes
+        mc.setBlocks(x, y, z, x, y+2, z,  block.DIAMOND_BLOCK)
+        #add one to the origin along x-axis
+        x+=1
+    #add one to the origin along z-axis
+    z+=1
+  new_pos = cur_pos()
+  new_pos[2]+=1 
+  #make a doorway to maze
+  if not check_block(new_pos, AIR):
+    mc.setBlocks(new_pos[0], new_pos[1], new_pos[2], new_pos[0], new_pos[1]+2, new_pos[2]+1, block.AIR)  
+      
+
+        
+build_layer(data)
 
 
 

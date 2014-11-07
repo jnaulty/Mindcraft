@@ -4,7 +4,7 @@ Taken from RosettaCode site for maze creation
 """
 from random import shuffle, randrange
 
-def make_maze(w = 16, h = 8):
+def make_maze(w = 20, h = 20):
   vis = [[0] * w + [1] for _ in range(h)] + [[1] * (w+1)]
   ver = [['100'] * w + ['1'] for _ in range(h)] + [[]]
   hor = [['111'] * w + ['1'] for _ in range(h+1)]
