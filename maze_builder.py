@@ -8,6 +8,9 @@ import minecraft.block as block
 import time
 
 mc = minecraft.Minecraft.create()
+#Smooth Grass World
+mc.setBlocks(-100, -1, -100, 100, 0, 100, 2)
+mc.setBlocks(-100, 1, -100, 100, 100, 100, 0)
 mc.postToChat("Begin Building Maze")
 
 
