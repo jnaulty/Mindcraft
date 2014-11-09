@@ -25,7 +25,7 @@ def cur_pos():
   location = [x, y, z]
   return location
 
-def check_block(location, BLOCK):
+def check_block(location, BLOCK, direction):
   #return Boolean if location has block.block
   #location = (x, y, z)
   #block = mcpi block type in CAPS
@@ -33,6 +33,37 @@ def check_block(location, BLOCK):
     return True
   else:
     return False
+
+def check_block_dir(BLOCK):
+  #BLOCKS =takes block type: block.TYPE
+  #direction: forward, left, right, behind
+  space_dict = {'forward': 0, 'left': 0, 'right': 0, 'back': 0}
+  pos = cur_pos()
+  fwd = pos[2]+1
+  left = pos[0]-1
+  right = pos[0]+1
+  back = pos[2]-1
+  for key in space_dict:
+    if key == 'forward':
+      while mc.getBlock(pos[0], pos[1], fwd) == BLOCK:
+        space_dict['forward'] += 1
+        fwd +=1
+    elif key == 'left':
+      while mc.getBlock(left, pos[1], pos[2]) == BLOCK:
+        space_dict['left'] -= 1
+        left +=1
+    elif key == 'right':
+      while mc.getBlock(right, pos[1], pos[2]) == BLOCK:
+        space_dict['right'] += 1
+        right +=1
+    elif key == 'back':
+      while mc.getBlock(pos[0], pos[1], back) == BLOCK:
+        space_dict['back'] += 1
+        back -=1
+  return space_dict
+      
+
+def nav_maze(pos):
   
 
 def build_maze(layer):
@@ -66,7 +97,6 @@ def build_maze(layer):
         #set block where 1 goes
         mc.setBlocks(x_origin, y, z, x_origin, y+2, z,  block.DIAMOND_BLOCK)
         #add one to the origin along x-axis
-	mc.postToChat(x)
       else:
 	char == "0"
 	mc.setBlocks(x_origin, y, z, x_origin, y+2, z, block.AIR)
