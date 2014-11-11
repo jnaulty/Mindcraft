@@ -15,21 +15,21 @@ mc.postToChat("Begin Building Maze")
 
 
 #grab maze file 
-with open('maze.txt', 'r') as f:
+with open('maze2.txt', 'r') as f:
   data = f.read()
 f.close()
 
 def cur_pos():
-  #return list of player's tile position
-  x,y,z = mc.player.getTilePos()
-  location = [x, y, z]
-  return location
+  #return vec3 
+  #get it with pos.x, pos.y, pos.z
+  pos = mc.player.getTilePos()
+  return pos
 
-def check_block(location, BLOCK, direction):
+def check_block(location, BLOCK):
   #return Boolean if location has block.block
   #location = (x, y, z)
   #block = mcpi block type in CAPS
-  if mc.getBlock(location[0], location[1], location[2]) == BLOCK:
+  if mc.getBlock(location.x, location.y, location.z) == BLOCK:
     return True
   else:
     return False
@@ -39,31 +39,32 @@ def check_block_dir(BLOCK):
   #direction: forward, left, right, behind
   space_dict = {'forward': 0, 'left': 0, 'right': 0, 'back': 0}
   pos = cur_pos()
-  fwd = pos[2]+1
-  left = pos[0]-1
-  right = pos[0]+1
-  back = pos[2]-1
+  fwd = pos.z+1
+  left = pos.x+1
+  right = pos.x-1
+  back = pos.z-1
   for key in space_dict:
     if key == 'forward':
-      while mc.getBlock(pos[0], pos[1], fwd) == BLOCK:
-        space_dict['forward'] += 1
-        fwd +=1
+      if mc.getBlock(pos.x, pos.y, fwd) == BLOCK:
+          space_dict['forward'] += 1
+          fwd +=1
     elif key == 'left':
-      while mc.getBlock(left, pos[1], pos[2]) == BLOCK:
-        space_dict['left'] -= 1
-        left +=1
+      if mc.getBlock(left, pos.y, pos.z) == BLOCK:
+          space_dict['left'] += 1
+          left +=1
     elif key == 'right':
-      while mc.getBlock(right, pos[1], pos[2]) == BLOCK:
-        space_dict['right'] += 1
-        right +=1
+      if mc.getBlock(right, pos.y, pos.z) == BLOCK:
+          space_dict['right'] += 1
+          right -=1
     elif key == 'back':
-      while mc.getBlock(pos[0], pos[1], back) == BLOCK:
+      if mc.getBlock(pos.x, pos.y, back) == BLOCK:
         space_dict['back'] += 1
         back -=1
   return space_dict
       
-
-def nav_maze(pos):
+def set_cam():
+  entity = mc.getPlayerEntityIds()
+  mc.camera.setFollow(entity[0])
   
 
 def build_maze(layer):
@@ -104,16 +105,20 @@ def build_maze(layer):
     #add one to the origin along z-axis
     z+=1
   new_pos = cur_pos()
-  new_pos[2]+=1 
+  new_pos.z+=1 
   #make a doorway to maze
   if not check_block(new_pos, block.AIR):
-    mc.setBlocks(new_pos[0], new_pos[1], new_pos[2], new_pos[0], new_pos[1]+2, new_pos[2]+1, block.AIR)  
+    mc.setBlocks(new_pos.x, new_pos.y, new_pos.z, new_pos.x, new_pos.y+2, new_pos.z+1, block.AIR)  
       
 
-        
-build_maze(data)
+
+def start():
+  set_cam()
+  mc.player.setPos(0,0,0)        
+  build_maze(data)
 
 
+start()
 
 
 
