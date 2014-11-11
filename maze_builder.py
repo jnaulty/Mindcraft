@@ -39,18 +39,18 @@ def check_block_dir(BLOCK):
   #direction: forward, left, right, behind
   space_dict = {'forward': 0, 'left': 0, 'right': 0, 'back': 0}
   pos = cur_pos()
-  fwd = pos.z+1
-  left = pos.x+1
-  right = pos.x-1
-  back = pos.z-1
+  fwd = mc.getBlock(pos.x, pos.y, pos.z+1) 
+  left = mc.getBlock(pos.x+1, pos.y, pos.z) 
+  right = mc.getBlock(pos.x-1, pos.y, pos.z) 
+  back = mc.getBlock(pos.x, pos.y, pos.z-1) 
   for key in space_dict:
-    if key == 'forward' and mc.getBlock(pos.x, pos.y, fwd) == BLOCK:
+    if key == 'forward' and fwd == BLOCK:
           space_dict['forward'] += 1
-    elif key == 'left'and  mc.getBlock(left, pos.y, pos.z) == BLOCK:
+    elif key == 'left'and  left == BLOCK:
           space_dict['left'] += 1
-    elif key == 'right'and  mc.getBlock(right, pos.y, pos.z) == BLOCK:
+    elif key == 'right'and  right == BLOCK:
           space_dict['right'] += 1
-    elif key == 'back' and mc.getBlock(pos.x, pos.y, back) == BLOCK:
+    elif key == 'back' and back == BLOCK:
         space_dict['back'] += 1
   return space_dict
       
