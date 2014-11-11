@@ -53,7 +53,24 @@ def check_block_dir(BLOCK):
     elif key == 'down' and back == BLOCK:
         space_dict['down'] += 1
   return space_dict
-      
+
+def move_player():
+  open_spaces = check_block_dir(block.AIR)
+  input_list = []
+  for key in open_spaces:
+    if open_spaces[key] == 1:
+      input_list += key
+  move = raw_input('---Type where you want to move--- \n' + str(input_list) + ' '
+  pos = cur_pos()
+  if move = 'up':
+    mc.player.setPos(pos.x, pos.y, pos.z+1)
+  elif move = 'down':
+    mc.player.setPos(pos.x, pos.y, pos.z-1)
+  elif move = 'left':
+    mc.player.setPos(pos.x+1, pos.y, pos.z)
+  elif move = 'right':
+    mc.player.setPos(pos.x-1, pos.y, pos.z)
+
 def set_cam():
   entity = mc.getPlayerEntityIds()
   mc.camera.setFollow(entity[0])
@@ -114,7 +131,8 @@ def start():
 
 
 start()
-
+while True:
+  move_player()
 
 
 
