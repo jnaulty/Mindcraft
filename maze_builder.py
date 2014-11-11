@@ -37,21 +37,21 @@ def check_block(location, BLOCK):
 def check_block_dir(BLOCK):
   #BLOCKS =takes block type: block.TYPE
   #direction: forward, left, right, behind
-  space_dict = {'forward': 0, 'left': 0, 'right': 0, 'back': 0}
+  space_dict = {'up': 0, 'left': 0, 'right': 0, 'down': 0}
   pos = cur_pos()
   fwd = mc.getBlock(pos.x, pos.y, pos.z+1) 
   left = mc.getBlock(pos.x+1, pos.y, pos.z) 
   right = mc.getBlock(pos.x-1, pos.y, pos.z) 
   back = mc.getBlock(pos.x, pos.y, pos.z-1) 
   for key in space_dict:
-    if key == 'forward' and fwd == BLOCK:
-          space_dict['forward'] += 1
+    if key == 'up' and fwd == BLOCK:
+          space_dict['up'] += 1
     elif key == 'left'and  left == BLOCK:
           space_dict['left'] += 1
     elif key == 'right'and  right == BLOCK:
           space_dict['right'] += 1
-    elif key == 'back' and back == BLOCK:
-        space_dict['back'] += 1
+    elif key == 'down' and back == BLOCK:
+        space_dict['down'] += 1
   return space_dict
       
 def set_cam():
@@ -109,7 +109,7 @@ def start():
   mc.player.setPos(0,0,0)        
   build_maze(data)
   pos = cur_pos()
-  mc.player.setPos(pos.x, pos.y, pos.z+1)
+  mc.player.setPos(pos.x+.5, pos.y, pos.z+2.5)
   print check_block_dir(block.AIR)
 
 
