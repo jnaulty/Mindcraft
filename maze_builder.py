@@ -59,16 +59,16 @@ def move_player():
   input_list = []
   for key in open_spaces:
     if open_spaces[key] == 1:
-      input_list += key
-  move = raw_input('---Type where you want to move--- \n' + str(input_list) + ' '
+      input_list.append(key)
+  move = raw_input('---Type where you want to move--- \n' + str(input_list) + ' ')
   pos = cur_pos()
-  if move = 'up':
+  if move == 'up' and 'up' in input_list:
     mc.player.setPos(pos.x, pos.y, pos.z+1)
-  elif move = 'down':
+  elif move == 'down' and 'down' in input_list:
     mc.player.setPos(pos.x, pos.y, pos.z-1)
-  elif move = 'left':
+  elif move == 'left' and 'left' in input_list:
     mc.player.setPos(pos.x+1, pos.y, pos.z)
-  elif move = 'right':
+  elif move == 'right' and 'right' in input_list:
     mc.player.setPos(pos.x-1, pos.y, pos.z)
 
 def set_cam():
