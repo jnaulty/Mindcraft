@@ -1,3 +1,6 @@
+#Author: John Naulty Jr.
+#October 2014
+#Cognitive Technology Group
 """
 Builds a Maze
 
@@ -55,6 +58,11 @@ def check_block_dir(BLOCK):
   return space_dict
 
 def move_player():
+  """
+  right now, this is a command line interface with moving
+  the avatar. Eventually these commands will be taken via the BCI
+  interface API. As of now, this is just to fill in the void.
+  """
   open_spaces = check_block_dir(block.AIR)
   input_list = []
   for key in open_spaces:
@@ -72,6 +80,7 @@ def move_player():
     mc.player.setPos(pos.x-1, pos.y, pos.z)
 
 def set_cam():
+  #birds eye view position
   entity = mc.getPlayerEntityIds()
   mc.camera.setFollow(entity[0])
   
