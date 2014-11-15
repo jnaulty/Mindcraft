@@ -18,9 +18,12 @@ mc.postToChat("Begin Building Maze")
 
 
 #grab maze file 
-with open('maze2.txt', 'r') as f:
-  data = f.read()
-f.close()
+#with open('maze2.txt', 'r') as f:
+#  data = f.read()
+#f.close()
+from gen_maze import maze
+data = maze(20, 20)
+
 
 def cur_pos():
   #return vec3 
@@ -98,7 +101,8 @@ def build_maze(layer):
   #may also use origin = mc.player.getTilePos()
   #then use origin.x, origin.y, origin.z to set
   x,y,z = mc.player.getTilePos()
-  lines = layer.split("\n")
+  if isinstance(layer, str):
+    lines = layer.split("\n")
   x_origin = x
   z_origin = z
   z_lines = len(lines)
@@ -112,12 +116,12 @@ def build_maze(layer):
   for line in lines:
     x_origin=0	
     for char in line:
-      if char == "1":
+      if char == "1" or 1:
         #set block where 1 goes
         mc.setBlocks(x_origin, y, z, x_origin, y+2, z,  block.DIAMOND_BLOCK)
         #add one to the origin along x-axis
       else:
-	char == "0"
+	char == "0" or 0
 	mc.setBlocks(x_origin, y, z, x_origin, y+2, z, block.AIR)
       x_origin+=1
     #add one to the origin along z-axis
