@@ -74,13 +74,13 @@ def move_player():
   move = raw_input('---Type where you want to move--- \n' + str(input_list) + ' ')
   pos = cur_pos()
   if move == 'up' and 'up' in input_list:
-    mc.player.setPos(pos.x, pos.y, pos.z+1)
+    mc.player.setTilePos(pos.x, pos.y, pos.z+1)
   elif move == 'down' and 'down' in input_list:
-    mc.player.setPos(pos.x, pos.y, pos.z-1)
+    mc.player.setTilePos(pos.x, pos.y, pos.z-1)
   elif move == 'left' and 'left' in input_list:
-    mc.player.setPos(pos.x+1, pos.y, pos.z)
+    mc.player.setTilePos(pos.x+1, pos.y, pos.z)
   elif move == 'right' and 'right' in input_list:
-    mc.player.setPos(pos.x-1, pos.y, pos.z)
+    mc.player.setTilePos(pos.x-1, pos.y, pos.z)
 
 def set_cam():
   #birds eye view position
@@ -103,6 +103,8 @@ def build_maze(layer):
   x,y,z = mc.player.getTilePos()
   if isinstance(layer, str):
     lines = layer.split("\n")
+  else:
+    lines = layer
   x_origin = x
   z_origin = z
   z_lines = len(lines)
@@ -116,12 +118,12 @@ def build_maze(layer):
   for line in lines:
     x_origin=0	
     for char in line:
-      if char == "1" or 1:
+      if char == "1" or char == 1:
         #set block where 1 goes
         mc.setBlocks(x_origin, y, z, x_origin, y+2, z,  block.DIAMOND_BLOCK)
         #add one to the origin along x-axis
       else:
-	char == "0" or 0
+	char == "0" or char == 0
 	mc.setBlocks(x_origin, y, z, x_origin, y+2, z, block.AIR)
       x_origin+=1
     #add one to the origin along z-axis
@@ -130,7 +132,7 @@ def build_maze(layer):
   new_pos.z+=1 
   #make a doorway to maze
   if not check_block(new_pos, block.AIR):
-    mc.setBlocks(new_pos.x, new_pos.y, new_pos.z, new_pos.x, new_pos.y+2, new_pos.z+1, block.AIR)  
+    mc.setBlocks(new_pos.x, new_pos.y, new_pos.z+1, new_pos.x, new_pos.y+2, new_pos.z+1, block.AIR)  
       
 
 
@@ -140,8 +142,6 @@ def start():
   build_maze(data)
   pos = cur_pos()
   mc.player.setPos(pos.x+.5, pos.y, pos.z+2.5)
-  print check_block_dir(block.AIR)
-
 
 start()
 while True:

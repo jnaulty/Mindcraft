@@ -1,7 +1,6 @@
 
 import numpy
 from numpy.random import random_integers as rand
-import matplotlib.pyplot as pyplot
  
 def maze(width=81, height=51, complexity=.75, density=.75):
 # Only odd shapes
@@ -32,7 +31,3 @@ def maze(width=81, height=51, complexity=.75, density=.75):
           x, y = x_, y_
   return Z
               
-#pyplot.figure(figsize=(10, 5))
-#pyplot.imshow(maze(80, 40), cmap=pyplot.cm.binary, interpolation='nearest')
-#pyplot.xticks([]), pyplot.yticks([])
-#pyplot.show()
