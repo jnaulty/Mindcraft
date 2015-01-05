@@ -1,19 +1,18 @@
-mcpi_examples
+MindCraft 
 =============
 
-Examples for Minecraft-Pi
+Example of mind-controlled Minecraft on the Raspberry Pi
 
-**The purpose of this is repository is to:**
+**The purpose of this is project is to:**
 
-    * Make a maze in Minecraft
-    * Enter the Maze
-    * Go through the Maze via EEG Signals
+    * Generate a maze in Minecraft
+    * Have Player's Avatar go through maze via EEG Signals
 
 Minecraft API is in the /minecraft directory.
 
 Equipment used:
   * Raspberry Pi
-  * EEG Device
+  * EEG Device--currently testing with Muse
   * Monitor
   * Keyboard
   * Mouse
